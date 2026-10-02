@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## 🚀 NoteHub Refactoring (Migrating to Next.js)
 
-## Getting Started
+The application has been successfully migrated from a Single Page Application
+(SPA) built with React and Vite to a modern, multi-page application utilizing
+**Next.js 16 (App Router)**. This refactoring enhances the overall user
+experience through hybrid rendering, optimized routing, and reliable state
+management.
 
-First, run the development server:
+### 🛠️ Key Project Implementations
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **📂 Multi-Page Structure & Dynamic Routing**:
+  - `/` — Static server-rendered home page with main information about NoteHub.
+  - `/notes` — Server-side rendered (SSR) list of notes supporting search,
+    pagination, and single note creation.
+  - `/notes/[id]` — Dynamic route for displaying specific note details fetched
+    by its unique identifier.
+- **⚡ Hybrid Rendering (Server & Client Separation)**:
+  - Implemented **Server-Side Rendering (SSR)** for core route entry points to
+    support SEO and initial page performance.
+  - Integrated **Prefetching & Hydration** via TanStack Query
+    (`HydrationBoundary`), enabling instant page data availability in the
+    browser.
+  - Isolated interactive logic (state management, debounced search, modal
+    triggers) within secure `'use client'` files (`Notes.client.tsx`,
+    `NoteDetails.client.tsx`).
+- **📡 Secure Global State & API Isolation**:
+  - Created an isolated, multi-user safe **`TanStackProvider`** utilizing
+    React's `useState` hook initialization to safeguard cache partitioning.
+  - Refactored network communication to work with Axios, centralizing endpoint
+    tasks within a dedicated `lib/api.ts` module.
+  - Migrated build-time parameters from Vite-specific structures to standard
+    environment variables using the `NEXT_PUBLIC_` runtime injection prefix.
+- **🛡️ Robust Error Boundaries & Structural States**:
+  - Introduced a global `app/loading.tsx` layout layer to handle non-blocking
+    asynchronous UI transitions.
+  - Implemented localized, client-interactive `error.tsx` boundary handlers to
+    elegantly recover from component-level network and parsing failures without
+    compromising core application runtime.
+- **🎨 Code Hygiene & Styling**:
+  - Structured clean component design isolating each entity and its respective
+    style layout inside individual subdirectories.
+  - Utilized **CSS Modules** for strict scope protection and enforced code
+    consistency rules via Prettier formatting.
